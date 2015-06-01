@@ -15,15 +15,17 @@ Experiments
   + beginning_of()
 
   **Connectives**
-  + & and
-  + ǀǀ or
-  + ⊃ implies
-  + ↔ equivalence
-  + ! not
+  + ⊂ entail
+	+ ⊃ reverse entail
+  + = equivalence
+  + ǀ or
+  + ∧ negation
+	+ cover
+  + independence
 
   **Quantifiers**
-  + ∀x: ( is_Man(x) is_Mortal(x) )
-  + ∃y: ( is_Father(y, Peter) )
+  + ∀x: For all x ( is_man(x) is_mortal(x) )
+  + ∃y: There exists ( is_father(y, Peter) )
 
 ###2. Subword model embedded
   http://groups.csail.mit.edu/sls/publications/2007/Choueiter_Interspeech07.pdf
