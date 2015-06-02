@@ -25,5 +25,8 @@ Experiments
   + ∀x: ( is_Man(x) is_Mortal(x) )
   + ∃y: ( is_Father(y, Peter) )
 
-###2. Subword model embedded
+###2. Word Presentation
+  + trigram characters embedded
+
+  ** Reference **
   http://groups.csail.mit.edu/sls/publications/2007/Choueiter_Interspeech07.pdf
