@@ -28,7 +28,11 @@ Experiments
   + ∃y: There exists ( is_father(y, Peter) )
 
 ###2. Word Presentation
-  + trigram characters embedded
+  **Bigram characters model**
+  ```
+  "I eat apple" = ["#i", "i ", " e", "ea", "at", "t ", " a", "ap", "pp", "pl", "le", "e#"]
+  "我吃蘋果" = ["#我", "我吃", "吃蘋", "蘋果", "果#"]
+  ```
 
-  ** Reference **
+  **Reference**
   http://groups.csail.mit.edu/sls/publications/2007/Choueiter_Interspeech07.pdf
