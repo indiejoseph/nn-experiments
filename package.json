@@ -1,0 +1,27 @@
+{
+  "name": "nn-experiments",
+  "version": "1.0.0",
+  "description": "Experiments ===========",
+  "main": "index.js",
+  "dependencies": {
+    "hanzi": "^0.5.0",
+    "should": "^6.0.3",
+    "xregexp": "^2.0.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.2.5"
+  },
+  "scripts": {
+    "test": "mocha --compilers js:babel-core/register"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/indiejoseph/nn-experiments.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/indiejoseph/nn-experiments/issues"
+  },
+  "homepage": "https://github.com/indiejoseph/nn-experiments"
+}
