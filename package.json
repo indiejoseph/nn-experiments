@@ -5,10 +5,10 @@
   "main": "index.js",
   "dependencies": {
     "hanzi": "^0.5.0",
-    "should": "^6.0.3",
-    "xregexp": "^2.0.0"
+    "should": "^6.0.3"
   },
   "devDependencies": {
+    "babel-core": "^5.5.6",
     "mocha": "^2.2.5"
   },
   "scripts": {
