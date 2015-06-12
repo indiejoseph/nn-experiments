@@ -1,6 +1,7 @@
 import * as util from '../word_representation/lib/util';
 import 'should';
 
+
 describe('util', () => {
 
 	describe('tokenizer', function() {
@@ -17,6 +18,12 @@ describe('util', () => {
 			tokens.length.should.equal(31);
 		});
 
+		it('should convert simplified chinese to traditional chinese', () => {
+			let s = '愛爱';
+			let tokens = util.tokenize(s);
+			tokens[0].should.equal(tokens[1]);
+			tokens.length.should.equal(2);
+		});
 	});
 
 });

@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "hanzi": "^0.5.0",
+    "opencc": "byvoid/OpenCC",
     "should": "^6.0.3"
   },
   "devDependencies": {
