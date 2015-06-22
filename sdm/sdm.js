@@ -1,16 +1,29 @@
-import { kdTree } from './kdTree';
+import { KDTree } from 'kdtree';
 
 // Sparse Distributed Memory for Reinforcement Learning.
 // https://github.com/lightscalar/westside
 
-export default class Cortex {
+export class State {
+  constructor (...args) {
+    this._args = args;
+    this._value = 0;
+    this.length = this._args.length;
+  }
 
-  constructor (maxPrototypes, activationRadii, minLocs, learningRate, dims) {
+  * [Symbol.iterator]() {
+    for (let arg of this._args) {
+      yield arg;
+    }
+  }
+}
+
+export class Cortex {
+
+  constructor (maxPrototypes, activationRadii, minLocs, learningRate) {
     this.maxPrototypes = maxPrototypes;
     this.activationRadii = activationRadii;
     this.minLocs = minLocs;
     this.learningRate = learningRate;
-    this.dims = dims;
 
     // Define maximum allowed similarity between two input vectors.
     if(minLocs >= 3) {
@@ -20,7 +33,7 @@ export default class Cortex {
     }
 
     // All state vectors presented must be of same dimension.
-    this.vectorDimension = Object.keys(activationRadii).length;
+    this.vectorDimension = activationRadii.length;
 
     // Initialize prototypes & values.
     this.prototypes = [];
@@ -28,14 +41,12 @@ export default class Cortex {
 
     this.similarity = (p1, p2) => {
       let similarity = 1;
-      let key, d, tmp;
-      for (key in p1) {
-        if(key == '_value') continue;
+      let i, d, tmp;
+      for (i in p1._args) {
+        d = Math.abs(p1._args[i] - p2._args[i]);
 
-        d = Math.abs(p1[key] - p2[key]);
-
-        if(d < this.activationRadii[key]) {
-          tmp = 1 - d/this.activationRadii[key];
+        if(d < this.activationRadii._args[i]) {
+          tmp = 1 - d/this.activationRadii._args[i];
           if(tmp <= similarity) {
             similarity = tmp;
           }
@@ -51,13 +62,14 @@ export default class Cortex {
     };
 
     // Initialize the KD-tree for fast retrieval.
-    this.tree = new kdTree(this.prototypes, this.triangle, this.dims);
+    this.tree = new KDTree(this.vectorDimension);
   }
 
   add (state, value) {
     // Ensure that vector has the proper dimension.
-    if(Object.keys(state).length != this.vectorDimension)
+    if(state.length != this.vectorDimension) {
       throw('Vector dimension must be ' + this.vectorDimension + '.');
+    }
 
     if(this.sparseEnough(state)) {
       this.addPrototype(state, value);
@@ -100,10 +112,10 @@ export default class Cortex {
     let denom = 0;
     let p;
 
-    for(p of activeSet) {
+    for (p of activeSet) {
       denom += 1/p[1];
     }
-    for(p of activeSet) {
+    for (p of activeSet) {
       p[0]._value = p[0]._value + this.learningRate/denom * (value - predictedValue);
     }
   }
@@ -112,7 +124,7 @@ export default class Cortex {
     let newState = {};
     let key;
 
-    for(key in state) {
+    for (key in state) {
       newState[key] = state[key] + 2 * (Math.random() - 0.5) * this.activationRadii[key];
     }
     return newState;
@@ -130,7 +142,7 @@ export default class Cortex {
     let numer = 0;
     let p;
 
-    for(p of activeSet) {
+    for (p of activeSet) {
       denom += 1/p[1];
       numer += 1/p[1] * p[0]._value;
     }
@@ -155,7 +167,7 @@ export default class Cortex {
     let nearestNeighbor = this.tree.nearest(p, 1, 100);
     let key;
     // Replace the value of the target with the average of its closest neighbor.
-    for(key in p) {
+    for (key in p) {
       nearestNeighbor[0][key] = (nearestNeighbor[0][key] + p[key])/2;
     }
     this.prototypes.slice(target, 1);
@@ -163,7 +175,10 @@ export default class Cortex {
   }
 
   updateTree () {
-    this.tree = new kdTree(this.prototypes, this.triangle, this.dims);
+    this.tree = new kdTree(this.vectorDimension);
+    for (let prototype of this.prototypes) {
+      this.tree.insert(...prototype);
+    }
   }
 
   activeSet (state) {
